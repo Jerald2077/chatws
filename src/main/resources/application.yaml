@@ -1,3 +1,21 @@
 spring:
   application:
     name: chatws
+
+  # Conexion AMQP a RabbitMQ (puerto 5672).
+  # La usa RabbitTemplate / @RabbitListener, NO el relay STOMP.
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+app:
+  broker:
+    relay:
+      # false -> broker en memoria (enableSimpleBroker). Arranca sin RabbitMQ.
+      # true  -> relay STOMP contra RabbitMQ. Requiere el plugin rabbitmq_stomp.
+      enabled: false
+      host: localhost
+      # Puerto STOMP del plugin rabbitmq_stomp (distinto del 5672 de AMQP).
+      port: 61613

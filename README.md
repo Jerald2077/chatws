@@ -43,3 +43,54 @@ ChatWS es una aplicación de chat en tiempo real que permite a múltiples usuari
 5. **Broadcast:** El mensaje se reenvía a todos los suscriptores de `/topic/public`
 6. **Recepción:** Todos los clientes conectados reciben el mensaje simultáneamente
 
+---
+
+## 🐇 Migración a RabbitMQ (en progreso)
+
+El proyecto ya tiene la **base preparada**, pero sigue arrancando con el broker en
+memoria. El cambio se activa con una sola propiedad, sin tocar código.
+
+### Los dos puertos (no confundirlos)
+
+| Puerto | Protocolo | Lo usa | Propiedad |
+|---|---|---|---|
+| `5672` | AMQP | `RabbitTemplate`, `@RabbitListener` | `spring.rabbitmq.port` |
+| `61613` | STOMP | `enableStompBrokerRelay()` | `app.broker.relay.port` |
+
+El relay de Spring habla **STOMP**, no AMQP. Por eso hace falta el plugin
+`rabbitmq_stomp` habilitado en el servidor; sin él, el puerto 61613 no existe.
+
+### Activarlo
+
+1. Levantar RabbitMQ con el plugin STOMP ya habilitado:
+
+   ```bash
+   docker compose up -d rabbitmq
+   ```
+
+   Consola web en http://localhost:15672 (`guest` / `guest`).
+
+2. Cambiar la propiedad en `application.yaml`:
+
+   ```yaml
+   app:
+     broker:
+       relay:
+         enabled: true
+   ```
+
+3. Arrancar la app. Si el relay conecta, el log muestra
+   `"Started... StompBrokerRelay"` y deja de aparecer `SimpleBrokerMessageHandler`.
+
+### Volver atrás
+
+`app.broker.relay.enabled: false` y la app vuelve al broker en memoria.
+No necesita que RabbitMQ esté corriendo.
+
+### Lo que falta para la migración completa
+
+- Declarar exchanges/colas duraderas en vez de confiar en `amq.topic`.
+- Persistencia de historial de mensajes (hoy no se guarda nada).
+- Credenciales fuera del YAML (variables de entorno o Spring Config).
+- DLQ y TTL para mensajes no entregados.
+

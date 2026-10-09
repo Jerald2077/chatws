@@ -1,2 +1,5 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Lo lee el parser de terminos de Erlang dentro del contenedor Linux: con CRLF falla
+/docker/rabbitmq/enabled_plugins text eol=lf

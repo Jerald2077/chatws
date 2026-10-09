@@ -40,6 +40,24 @@
             <artifactId>spring-messaging</artifactId>
         </dependency>
 
+        <!-- RabbitMQ: cliente AMQP (RabbitTemplate, colas propias) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!-- Requeridos por enableStompBrokerRelay() para hablar STOMP sobre TCP
+             con RabbitMQ. Sin estos el relay falla en arranque.
+             Versiones gestionadas por el parent (reactor-bom / netty-bom). -->
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
