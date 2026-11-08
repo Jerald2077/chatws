@@ -8,9 +8,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-    @Override 
+    @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        // /topic   -> difusion: lo que se publica ahi lo reciben todos los suscriptos.
+        // /queue   -> privado: cada usuario se suscribe a /queue/{su nombre} y solo
+        //             recibe lo que se envie a ese destino puntual.
+        config.enableSimpleBroker("/topic", "/queue");
         config.setApplicationDestinationPrefixes("/app");
     }
     @Override 

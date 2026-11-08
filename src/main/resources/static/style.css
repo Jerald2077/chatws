@@ -61,6 +61,27 @@ h2 {
 .message-controls input[type="text"] {
     flex: 1;
 }
+.private-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+.private-controls input[type="text"] {
+    flex: 1;
+}
+.private-controls button {
+    background-color: #6f42c1;
+}
+.private-controls button:hover {
+    background-color: #59359a;
+}
+.message.private {
+    background-color: #f3eefb;
+    border-left: 3px solid #6f42c1;
+}
+.message.private strong {
+    color: #59359a;
+}
 input[type="text"] {
     padding: 12px;
     border: 1px solid #ccc;
@@ -116,11 +137,14 @@ button:hover {
     .connection-controls button {
         width: 100%;
     }
-    .message-controls {
+    .message-controls,
+    .private-controls {
         flex-direction: column;
     }
     .message-controls input[type="text"],
-    .message-controls button {
+    .message-controls button,
+    .private-controls input[type="text"],
+    .private-controls button {
         width: 100%;
     }
     button {
